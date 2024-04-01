@@ -4,19 +4,19 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 public class CriarLivroRequest {
 
-	@NotNull(message = "Titulo precisa ser informado")
+	@NotBlank(message = "Titulo precisa ser informado")
 	private String titulo;
-	@NotNull(message = "Autor precisa ser informado")
+	@NotBlank(message = "Autor precisa ser informado")
 	private String autor;
-	@NotNull(message = "Editora precisa ser informada")
+	@NotBlank(message = "Editora precisa ser informada")
 	private String editora;
-	@NotNull(message = "Descricao precisa ser informado")
+	@NotBlank(message = "Descricao precisa ser informado")
 	private String descricao;
-	@NotNull(message = "genero precisa ser informado")
+	@NotBlank(message = "genero precisa ser informado")
 	private String genero;
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	private LocalDate data;
@@ -68,7 +68,5 @@ public class CriarLivroRequest {
 	public void setDate(LocalDate date) {
 		this.data = date;
 	}
-
-
 
 }

@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "livros")
@@ -15,12 +16,16 @@ public class Livros {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotBlank(message = "Titulo precisa ser informado")
 	private String titulo;
+	@NotBlank(message = "Autor precisa ser informado")
 	private String autor;
+	@NotBlank(message = "Editora precisa ser informada")
 	private String editora;
+	@NotBlank(message = "Descricao precisa ser informado")
 	private String descricao;
+	@NotBlank(message = "genero precisa ser informado")
 	private String genero;
-
 	private LocalDate data;
 
 	public Long getId() {
