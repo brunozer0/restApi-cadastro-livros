@@ -19,7 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.bruno.livraria.Exceptions.IdNotFoundException;
 import com.bruno.livraria.dto.CriarLivroRequest;
 import com.bruno.livraria.model.Livros;
-import com.bruno.livraria.services.LivrosServiceImpl;
+import com.bruno.livraria.services.LivrosService;
 
 import jakarta.validation.ConstraintViolationException;
 
@@ -28,23 +28,22 @@ import jakarta.validation.ConstraintViolationException;
 @CrossOrigin(origins = "http://localhost:4200")
 public class LivrosController {
 
-	private final LivrosServiceImpl livrosServiceImpl;
+	private final LivrosService livrosService;
 
-	public LivrosController(LivrosServiceImpl livrosServiceImpl) {
-		this.livrosServiceImpl = livrosServiceImpl;
-
+	public LivrosController(LivrosService livrosService) {
+		this.livrosService = livrosService;
 	}
 
 	@GetMapping
 
 	public List<Livros> getLivros() {
-		return livrosServiceImpl.getLivros();
+		return livrosService.getLivros();
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Livros> getLivroById(@PathVariable("id") Long id) {
 		try {
-			Livros livroId = livrosServiceImpl.getLivroById(id);
+			Livros livroId = livrosService.getLivroById(id);
 			return ResponseEntity.ok(livroId);
 		} catch (IdNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
@@ -55,7 +54,7 @@ public class LivrosController {
 	@PostMapping
 	public ResponseEntity<Livros> cadastrarLivro(@RequestBody CriarLivroRequest criarLivroRequest) {
 		try {
-			Livros livroSalvo = livrosServiceImpl.salvarLivro(criarLivroRequest);
+			Livros livroSalvo = livrosService.salvarLivro(criarLivroRequest);
 			return ResponseEntity.created(URI.create("/api/livros/" + livroSalvo.getId())).body(livroSalvo);
 		} catch (ConstraintViolationException e) {
 			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage(), e);
@@ -65,7 +64,7 @@ public class LivrosController {
 	@PutMapping
 	public ResponseEntity<Livros> updateLivro(@RequestBody Livros livro) {
 		try {
-			Livros updatedLivro = livrosServiceImpl.updateLivro(livro);
+			Livros updatedLivro = livrosService.updateLivro(livro);
 			return ResponseEntity.ok(updatedLivro);
 		} catch (IdNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
@@ -77,8 +76,8 @@ public class LivrosController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteLivro(@PathVariable("id") Long id) {
 		try {
-			Livros livro = livrosServiceImpl.getLivroById(id);
-			livrosServiceImpl.deleteLivro(livro);
+			Livros livro = livrosService.getLivroById(id);
+			livrosService.deleteLivro(livro);
 			return ResponseEntity.noContent().build();
 		} catch (IdNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
