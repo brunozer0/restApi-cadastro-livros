@@ -27,6 +27,7 @@ public class Livros {
 	@NotBlank(message = "genero precisa ser informado")
 	private String genero;
 	private LocalDate data;
+	private boolean deletado;
 
 	public Long getId() {
 		return id;
@@ -82,6 +83,14 @@ public class Livros {
 
 	public void setDate(LocalDate data) {
 		this.data = data;
+	}
+
+	public boolean isDeletado() {
+		return deletado;
+	}
+
+	public void setDeletado(boolean deletado) {
+		this.deletado = deletado;
 	}
 
 }

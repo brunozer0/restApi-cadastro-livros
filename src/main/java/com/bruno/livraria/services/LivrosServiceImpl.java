@@ -2,6 +2,7 @@ package com.bruno.livraria.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,8 @@ public class LivrosServiceImpl implements LivrosService {
 	public void deleteLivro(Livros livro) {
 		Optional<Livros> livroOptional = livroRepository.findById(livro.getId());
 		if (livroOptional.isPresent()) {
-			livroRepository.delete(livro);
+			livro.setDeletado(true);
+			livroRepository.save(livro);
 		} else {
 			throw new IdNotFoundException("Livro com ID " + livro.getId() + " não encontrado");
 		}
@@ -63,7 +65,9 @@ public class LivrosServiceImpl implements LivrosService {
 
 	@Override
 	public List<Livros> getLivros() {
-		return livroRepository.findAll();
+		return livroRepository.findAll().stream()
+                .filter(livro -> !livro.isDeletado())
+                .collect(Collectors.toList());
 	}
 
 }
